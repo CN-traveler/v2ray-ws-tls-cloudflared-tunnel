@@ -1,0 +1,24 @@
+name: 'v2ray-ws-tls-cloudflared-tunnel'
+inputs:
+  pem:
+    required: true
+  key:
+    required: true
+  path:
+    required: true
+  port:
+    required: true
+  id:
+    required: true
+  token:
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.pem }}
+    - ${{ inputs.key }}
+    - ${{ inputs.path }}
+    - ${{ inputs.port }}
+    - ${{ inputs.id }}
+    - ${{ inputs.token }}
