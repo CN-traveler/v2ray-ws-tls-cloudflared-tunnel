@@ -1,20 +1,12 @@
 #!/bin/bash
 
-cd /
-
-mkdir secrets
-
-echo -e "$1" > /secrets/server.pem
-
-echo -e "$2" > /secrets/server.key
-
 echo "server {
   listen 443 ssl;
   ssl_certificate /secrets/server.pem;
   ssl_certificate_key /secrets/server.key;
-  location $3 {
+  location $2 {
     proxy_redirect off;
-    proxy_pass http://127.0.0.1:$4;
+    proxy_pass http://127.0.0.1:16823;
     proxy_http_version 1.1;
     proxy_set_header Upgrade \$http_upgrade;
     proxy_set_header Connection "upgrade";
@@ -30,12 +22,12 @@ echo "server {
 echo "{
   \"inbounds\": [
     {
-      \"port\": $4,
+      \"port\": 16823,
       \"protocol\": \"vmess\",
       \"settings\": {
         \"clients\": [
           {
-            \"id\": \"$5\",
+            \"id\": \"$1\",
             \"alterId\": 0
           }
         ]
@@ -43,7 +35,7 @@ echo "{
       \"streamSettings\":{
         \"network\": \"ws\",
         \"wsSettings\": {
-          \"path\": \"$3\"
+          \"path\": \"$2\"
         }
       }
     }
@@ -58,6 +50,6 @@ echo "{
 
 nginx
 
-cloudflared service install $6
+cloudflared service install $3
 
 /v2ray-linux-64/v2ray

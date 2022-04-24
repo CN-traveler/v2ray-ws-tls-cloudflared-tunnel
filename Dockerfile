@@ -13,6 +13,9 @@ RUN apt-get update && \
     chmod +x ./v2ray-linux-64/v2ray && \
     wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb && \
     dpkg -i cloudflared-linux-amd64.deb && \
+    mkdir secrets && \
+    openssl genrsa -out /secrets/server.key 2048 && \
+    openssl req -new -x509 -key /secrets/server.key -out /secrets/server.pem -subj "/C=US" && \
     chmod +x /opt/entrypoint.sh
 
 ENTRYPOINT ["/opt/entrypoint.sh"]
